@@ -16,6 +16,7 @@ This repository contains a modular project composed of three main components:
 ---
 
 ## Project Structure
+```
 ProjectRoot/
 │
 ├── WebsiteFiles/
@@ -24,7 +25,7 @@ ProjectRoot/
 │
 ├── ArduinoFiles/ # Arduino IDE source files
 └── Konsep/ # Conceptual project documentation
-
+```
 ---
 
 ## Prerequisites
