@@ -39,35 +39,35 @@ ProjectRoot/
 
 > Use a virtual environment (Recommended)
 
-# Navigate to the back-end directory
-cd WebsiteFiles/back-end
+##### Navigate to the back-end directory
+`cd WebsiteFiles/back-end`
 
-# Create a virtual environment
-python -m venv venv
+##### Create a virtual environment
+`python -m venv venv`
 
-# Activate the virtual environment
-# Windows
-venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
+### Activate the virtual environment
+#### Windows
+`venv\Scripts\activate`
+#### macOS/Linux
+`source venv/bin/activate`
 
-# Install dependencies
-pip install -r requirements.txt
+#### Install dependencies
+`pip install -r requirements.txt`
 
-# Run the FastAPI server
-uvicorn main:app --reload
+#### Run the FastAPI server
+`uvicorn main:app --reload`
 
 ---
 ## Front-End Setup (React + Tailwind)
 
-# Navigate to the front-end directory
-cd WebsiteFiles/front-end
+#### Navigate to the front-end directory
+`cd WebsiteFiles/front-end`
 
-# Install dependencies
-npm install
+#### Install dependencies
+`npm install`
 
-# Start the development server
-npm run dev
+#### Start the development server
+`npm run dev`
 >The front-end will be served at http://localhost:5173 by default.
 
 ----
