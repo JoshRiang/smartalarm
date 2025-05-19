@@ -1,5 +1,5 @@
 # About This Project
-Sleep quality is determined by the quality of waking up. By creating a smart alarm, which can detect sleep phases, we can improve the quality of waking up. So this project focuses on detecting the user's sleep phase through movement. Then through a series of systems using Machine Learning technology, we can determine the right time to wake up the user without surprising them. Current features:
+Sleep quality is determined by the quality of waking up. By creating a smart alarm, which can detect sleep phases, we can improve the quality of waking up. So this project focuses on detecting the user's sleep phase through movement. Then through a series of systems using algorithm from SleepPy package, we can determine the right time to wake up the user without surprising them. Current features:
 - Motor connected to ESP32 used to open the window curtain.
 - White noise to improve sleep quality.
 - Nature background sound to simulate early morning situation.
