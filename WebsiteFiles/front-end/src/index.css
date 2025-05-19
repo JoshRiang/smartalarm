@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+/* make the entire body background is black */
+body {
+  background-color: #181818;
+  color: #ccccc2;
+}
+
