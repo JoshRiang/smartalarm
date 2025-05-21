@@ -1,12 +1,27 @@
 # this program is the main backend program, data will be sent to front-end
 # run this program using: uvicorn main:app --reload
-from fastapi import FastAPI, requests, Query
+from fastapi import FastAPI, requests, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import serial
-from clock import Clock
 import httpx
+import threading
+import time
+from clock import Clock
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+def background_job():
+    while True:
+        print(f"Current time: {clock_main.get_time()}")
+        time.sleep(1)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    thread = threading.Thread(target=background_job, daemon=True)
+    thread.start()
+    yield
+    # (opsional) kode cleanup di sini jika perlu
+
+app = FastAPI(lifespan=lifespan)
 
 # Pastikan React app berjalan di localhost:5173
 app.add_middleware(
@@ -17,8 +32,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-clock = Clock("120000")  # waktu awal jam 12:00:00
-clock.start()
+clock_main = Clock("120000", 1.0)
+clock_main.start()
 
 WEATHER_CODE_MAP = {
     0: ("Clear", "fas fa-sun"),
@@ -64,7 +79,31 @@ async def get_sleeping_phase():
 
 @app.get("/get-clock")
 async def get_clock():
-    return {"time": clock.get_time()}
+    return {"time": clock_main.get_time()}
+
+@app.get("/set-clock")
+async def set_alarm_time(time: str):
+    # Format: "hhmm"
+    if len(time) != 6 or not time.isdigit():
+        return {"error": "Invalid time format. Use 'hhmmss'."}
+    
+    # Set alarm time
+    clock_main._time = time
+    return {"message": f"Alarm set to {time}"}
+
+@app.post("/set-clock-speed")
+async def set_clock_speed(speed: float = Query(...)):
+    print(speed)
+    
+    
+    if speed <= 0:
+        raise HTTPException(status_code=400, detail="Speed must be positive.")
+    if speed == 1:
+        clock_main.set_speed(speed)
+    else:
+        clock_main.set_speed(speed*100)    
+    
+    return {"message": f"Clock speed set to {speed}x"}
 
 @app.get("/get-weather")
 async def get_weather(lat: float = Query(...), lon: float = Query(...)):

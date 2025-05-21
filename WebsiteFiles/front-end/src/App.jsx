@@ -115,11 +115,15 @@ function AlarmSelector() {
 
   return (
     <div className="p-6 text-white w-full md:w-[70%] ">
-      <p className="text-2xl font-bold text-white">Jenis alarm</p>
-      <p className="text-gray-400 mb-4">Pilih jenis alarm sesuai yang kamu rasa nyaman. Akan menentukan bagaimana cara kamu bangun.</p>
+      <p className="text-2xl font-bold text-white">Alarm type</p>
+      <p className="text-gray-400 mb-4">Choose the alarm type that you feel comfortable with. This will determine how you wake up.</p>
 
       {/* Scrollable container */}
-      <div ref={scrollRef} className="flex overflow-x-auto space-x-4 snap-x snap-mandatory scrollbar-hide" style={{ scrollSnapType: "x mandatory" }}>
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto space-x-4 snap-x snap-mandatory scrollbar-custom"
+        style={{ scrollSnapType: "x mandatory" }}
+      >
         {alarmTypes.map((alarm, i) => (
           <div
             key={i}
@@ -145,7 +149,7 @@ const SoundSetting = ({ title }) => {
   const [volume, setVolume] = useState(25);
 
   return (
-    <div className="mb-6">
+    <div className="mb-3">
       <p className="text-white font-medium">{title}</p>
       <div className="flex items-center space-x-2">
         <input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(e.target.value)} className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
@@ -159,17 +163,78 @@ const SoundSetting = ({ title }) => {
 function AlarmSettings() {
   return (
     <div>
-      <div className="bg-[#2b2b2b] md:bg-[#2b2b2b]/0 px-8 md:px-58 py-1 ">
+      <div className="bg-[#2b2b2b] md:bg-[#2b2b2b]/0 px-8 md:px-58 py-1 pb-6">
         <h2 className="text-2xl font-bold text-white mb-1">Settings</h2>
-        <p className="text-gray-400">Configure your alarm sound.</p>
+        <p className="text-gray-400">All of the alarm and clock settings should be here.</p>
       </div>
-      <div className="px-8 md:px-58 py-4">
+      <div className="px-8 md:px-58">
+        <p className="">Set your main time:</p>
+        <input
+          type="time"
+          className="mt-2 p-2 w-full rounded-md bg-[#353535] text-white placeholder-gray-400"
+          onChange={(e) => {
+            // use GET request
+            fetch(`http://localhost:8000/set-clock?time=${e.target.value.replace(":", "")}00`).catch((err) => console.error("Error setting clock:", err));
+          }}
+        />
+        <p className="mt-6">Set your time speed:</p>
+        <ClockSpeedControl />
+      </div>
+
+      <div className="px-8 md:px-58 py-6">
+        <p>Configure your alarm sound.</p>
         <SoundSetting title="Primary alarm" />
         <SoundSetting title="Sound one" />
         <SoundSetting title="Sound two" />
         <SoundSetting title="Sound three" />
       </div>
     </div>
+  );
+}
+
+function ClockSpeedControl() {
+  const [speed, setSpeed] = useState(1);
+
+  // Slider range: 0.1x - 5x
+  const handleChange = (e) => setSpeed(Number(e.target.value));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await fetch("http://localhost:8000/set-clock-speed?speed=" + speed, {
+      method: "POST",
+    });
+  };
+
+  const [submitted, setSubmitted] = useState(false);
+
+  return (
+    <form
+      onSubmit={async (e) => {
+        await handleSubmit(e);
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 1500);
+      }}
+      className="flex items-center space-x-3"
+    >
+      <input
+        type="range"
+        min="1"
+        max="20"
+        step="0.1"
+        value={speed}
+        onChange={handleChange}
+        className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+      />
+      <span className="text-gray-300 w-16 text-right">{speed.toFixed(1)}x</span>
+      <button
+        type="submit"
+        className={`ml-2 px-3 py-1 rounded bg-[#353535] transition-colors duration-200 ${
+          submitted ? "bg-blue-400 text-white" : ""
+        }`}
+      >
+        {submitted ? "Done" : "Set"}
+      </button>
+    </form>
   );
 }
 
@@ -191,7 +256,7 @@ function App() {
         <AlarmSelector />
       </div>
       {/* DIV SETTING */}
-      <AlarmSettings></AlarmSettings>
+      <AlarmSettings />
     </SleepStatusProvider>
   );
 }

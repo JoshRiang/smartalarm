@@ -2,11 +2,15 @@ import time
 import threading
 
 class Clock:
-    def __init__(self, start_time="000000"):
+    def __init__(self, start_time="000000", speed=1.0):
         # Format: "hhmmss"
         self.lock = threading.Lock()
         self.running = False
         self._time = start_time
+        self.speed = speed  # 1.0 = normal, 2.0 = 2x lebih cepat, dst
+
+    def set_speed(self, speed):
+        self.speed = speed
 
     def start(self):
         self.running = True
@@ -28,7 +32,7 @@ class Clock:
                 if h >= 24:
                     h = 0
                 self._time = f"{h:02d}{m:02d}{s:02d}"
-            time.sleep(1)
+            time.sleep(1.0 / self.speed)  # sleep dipercepat sesuai speed
 
     def get_time(self):
         with self.lock:

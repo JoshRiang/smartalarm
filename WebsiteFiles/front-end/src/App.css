@@ -18,3 +18,23 @@
   animation: loading 1s linear infinite;
 }
 
+/* Untuk browser berbasis Webkit (Chrome, Edge, Safari) */
+.scrollbar-custom::-webkit-scrollbar {
+  height: 8px;
+  background: transparent;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+/* Untuk Firefox */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
+
