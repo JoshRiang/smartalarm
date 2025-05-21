@@ -50,7 +50,7 @@ async def root():
 @app.get("/get-sleeping-status")
 async def get_sleeping_status():
     sleeping_status = {
-        "status": "tes",
+        "status": "sleeping",
         "last_time": "2023-10-01T12:00:00Z"
     }
     return sleeping_status
@@ -80,17 +80,25 @@ async def get_weather(lat: float = Query(...), lon: float = Query(...)):
         geo_data = geo_res.json()
 
         weather_code = weather_data["current_weather"]["weathercode"]
-        value = WEATHER_CODE_MAP.get(weather_code, ("Tidak diketahui", "fas fa-question"))
+        value = WEATHER_CODE_MAP.get(weather_code, ("", "fas fa-question"))
 
         if isinstance(value, tuple) and len(value) == 2:
             description, icon = value
         else:
-            description, icon = "Tidak diketahui", "fas fa-question"
+            description, icon = "", "fas fa-question"
             
+    # return {
+    #     "temperature": weather_data["current_weather"]["temperature"],
+    #     "description": description,
+    #     "icon": icon,
+    #     "city": geo_data.get("address", {}).get("city") or "",
+    #     "province": geo_data.get("address", {}).get("state") or "",  
+    # }
+    
     return {
-        "temperature": weather_data["current_weather"]["temperature"],
-        "description": description,
-        "icon": icon,
-        "city": geo_data.get("address", {}).get("city") or "Tidak diketahui",
-        "province": geo_data.get("address", {}).get("state") or "Tidak diketahui",  
+        "temperature": 20,
+        "description": "Cloudy",
+        "icon": "fas fa-cloud",
+        "city": "Depok",
+        "province": "Jawa Barat",
     }
