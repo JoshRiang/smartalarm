@@ -81,11 +81,9 @@ function AlarmSelector() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const alarmTypes = [
-    { title: "Soft Sound", description: "Wake up slowly with gentle sounds" },
-    { title: "Vibration", description: "Wake up with gentle vibration" },
-    { title: "Loud Sound", description: "Wake up instantly with loud sound" },
-    { title: "Loud Sound", description: "Wake up instantly with loud sound" },
-    { title: "Loud Sound", description: "Wake up instantly with loud sound" },
+    { title: "Based on time", description: "Alarm mechanism will start based on time to wakeup." },
+    { title: "Based on algorithm", description: "Algorithm will activate alarm mechanism when its time to wakeup. (Hardware required)" },
+    { title: "Ring immediately", description: "Wake up instantly with main alarm sound sound" },
   ];
 
   const handleScroll = () => {
