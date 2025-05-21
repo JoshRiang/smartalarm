@@ -14,7 +14,7 @@ export const SleepStatusProvider = ({ children }) => {
       try {
         const response = await fetch(SLEEPING_STATUS_URL);
         const data = await response.json();
-        console.log("Fetched sleep status:", data);
+        // console.log("Fetched sleep status:", data);
         setIsSleeping(data.status);
 
       } catch (error) {
