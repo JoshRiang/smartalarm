@@ -117,8 +117,8 @@ function AlarmSelector() {
 
   return (
     <div className="p-6 text-white w-full md:w-[70%] ">
-      <p className="text-[18px] font-semibold">Jenis alarm</p>
-      <p className="text-[12px] mb-4">Pilih jenis alarm sesuai yang kamu rasa nyaman. Akan menentukan bagaimana cara kamu bangun.</p>
+      <p className="text-2xl font-bold text-white">Jenis alarm</p>
+      <p className="text-gray-400 mb-4">Pilih jenis alarm sesuai yang kamu rasa nyaman. Akan menentukan bagaimana cara kamu bangun.</p>
 
       {/* Scrollable container */}
       <div ref={scrollRef} className="flex overflow-x-auto space-x-4 snap-x snap-mandatory scrollbar-hide" style={{ scrollSnapType: "x mandatory" }}>
@@ -143,6 +143,38 @@ function AlarmSelector() {
   );
 }
 
+const SoundSetting = ({ title }) => {
+  const [volume, setVolume] = useState(25);
+
+  return (
+    <div className="mb-6">
+      <p className="text-white font-medium">{title}</p>
+      <div className="flex items-center space-x-2">
+        <input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(e.target.value)} className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+        <span className="text-gray-300 w-10 text-right">{volume}%</span>
+      </div>
+      <input type="text" placeholder="Link suara" className="w-full mt-2 p-2 rounded-md bg-[#353535] text-white placeholder-gray-400" />
+    </div>
+  );
+};
+
+function AlarmSettings() {
+  return (
+    <div>
+      <div className="bg-[#2b2b2b] md:bg-[#2b2b2b]/0 px-8 md:px-58 py-1 ">
+        <h2 className="text-2xl font-bold text-white mb-1">Settings</h2>
+        <p className="text-gray-400">Configure your alarm sound.</p>
+      </div>
+      <div className="px-8 md:px-58 py-4">
+        <SoundSetting title="Primary alarm" />
+        <SoundSetting title="Sound one" />
+        <SoundSetting title="Sound two" />
+        <SoundSetting title="Sound three" />
+      </div>
+    </div>
+  );
+}
+
 function App() {
   return (
     <SleepStatusProvider>
@@ -160,8 +192,8 @@ function App() {
         </div> */}
         <AlarmSelector />
       </div>
-      
       {/* DIV SETTING */}
+      <AlarmSettings></AlarmSettings>
     </SleepStatusProvider>
   );
 }
